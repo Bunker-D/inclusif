@@ -1,7 +1,7 @@
 === Inclusif ===
 Contributors: bunkerd
 Tags: inclusif, point, point médian, texte inclusif, langue inclusif, inclusive language, inclusive text
-Requires at least: 3.0
+Requires at least: 4.0
 Tested up to: 4.9.4
 Requires PHP: 4
 License: MIT

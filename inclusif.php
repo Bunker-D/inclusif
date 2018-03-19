@@ -11,7 +11,7 @@
  * Description: Reconnaît les termes inclusifs féminins·masculins, remplacent les points utilisés par la forme choisie par l'administrateur,
  *              et rend l'emploi d'une forme inclusive aux logiciels de lecture automatique (aide aux personnes malvoyantes).
  *
- * Built on Wordpress 4.9.4.
+ * Compatible with WordPress 4.0 through 4.9.4
  *
  * @package Inclusif
  * @author  Bunker D
@@ -63,8 +63,8 @@ function bd_incl_replace( $content ) {
                 '~(?!<.*?)(?<=[\s>])((?:\pP|&\pL*;|&#\d*;|"|\'|“|‘|«|…)*?)(?!http|www)([\pLéÉèÈêÊîÎôÔûÛ]+)(?:\.|·|•)([\pLéÉèÈêÊîÎôÔûÛ]+)(?:\.|·|•)s(?=(\pP|&\pL*;|&#\d*;|"|\'|”|’|»|…)*?[\s<])(?![^<>]*?>)~Ss'
             );
     $repl = array(
-                "$1$2<span aria-hidden=\"true\">{$sep}$3</span>",
-                "$1$2<span aria-hidden=\"true\">{$sep}$3{$sep}</span>s"
+                "$1$2<span aria-hidden=\"true\" x=\"\">{$sep}$3</span>",
+                "$1$2<span aria-hidden=\"true\" x=\"\">{$sep}$3{$sep}</span>s"
             );
     $content = preg_replace($srch,$repl,$content);
 
@@ -87,8 +87,8 @@ add_action('admin_menu', function() {
 });
 
 add_action( 'admin_init', function() {
-    register_setting( 'bd-inclusif-options', 'bd_inclusif_sep' );
-    register_setting( 'bd-inclusif-options', 'bd_inclusif_comm' );
+    register_setting( 'bd-inclusif-options' , 'bd_inclusif_sep'  ,  array('default' => '·') );
+    register_setting( 'bd-inclusif-options' , 'bd_inclusif_comm' ,  array('default' => 'on') );
 });
 
 function bd_inclusif_options_page() {
