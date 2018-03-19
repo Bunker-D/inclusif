@@ -43,10 +43,10 @@
 defined( 'ABSPATH' ) or die();
 
 function bd_incl_replace( $content ) {
-
-    $sep = get_option('bd_inclusif_sep');
+    
+    $sep = get_option('bd_inclusif_sep','·');
     $content = ' ' . $content . ' ';
-
+    
     // Set the encoding to UTF-8.
     if ( function_exists( 'mb_regex_encoding' ) ) {
         $encoding = mb_regex_encoding();
@@ -54,9 +54,7 @@ function bd_incl_replace( $content ) {
     } else {
         $encoding = null;
     }
-
-
-
+    
     // Do the relevant substitutions
     $srch = array(
                 '~(?!<.*?)(?<=(?!<\pL[^>]*?)[\s>])((?:\pP|&\pL*;|&#\d*;|"|\'|“|‘|«|…)*?)(?!http|www)([\pLéÉèÈêÊîÎôÔûÛ]+)(?:\.|·|•)(?!com|gov|edu|org|xyz|int|fr|be|ch|de|uk|ca|es|it|quebec)([\pLéÉèÈêÊîÎôÔûÛ]+)(?=(\pP|&\pL*;|&#\d*;|"|\'|”|’|»|…)*?[\s<])(?![^<>]*?>)~Ss',
@@ -77,19 +75,19 @@ function bd_incl_replace( $content ) {
 }
 add_filter( 'the_title'    , 'bd_incl_replace' );
 add_filter( 'the_content'  , 'bd_incl_replace' );
-if ( get_option('bd_inclusif_comm') ) {
+if ( get_option('bd_inclusif_comm',true) ) {
     add_filter( 'comment_text' , 'bd_incl_replace' );
 }
 
-
-add_action('admin_menu', function() {
-    add_options_page( 'Configuration du texte inclusif', 'Texte inclusif', 'manage_options', 'inclusif', 'bd_inclusif_options_page' );
-});
-
-add_action( 'admin_init', function() {
-    register_setting( 'bd-inclusif-options' , 'bd_inclusif_sep'  ,  array('default' => '·') );
-    register_setting( 'bd-inclusif-options' , 'bd_inclusif_comm' ,  array('default' => 'on') );
-});
+if ( is_admin() ) {
+    add_action('admin_menu', function() {
+        add_options_page( 'Configuration du texte inclusif', 'Texte inclusif', 'manage_options', 'inclusif', 'bd_inclusif_options_page' );
+    });
+    add_action( 'admin_init', function() {
+        register_setting( 'bd-inclusif-options' , 'bd_inclusif_sep'  ,  array('default' => '·') );
+        register_setting( 'bd-inclusif-options' , 'bd_inclusif_comm' ,  array('default' => 'on') );
+    });
+}
 
 function bd_inclusif_options_page() {
 ?>
@@ -106,16 +104,16 @@ function bd_inclusif_options_page() {
                         <th>Séprataur utilisé :</th>
                         <td>
                             <select name="bd_inclusif_sep">
-                            <option value="·" <?php echo esc_attr( get_option('bd_inclusif_sep') ) == '·' ? 'selected="selected"' : ''; ?>>Point médian : ·</option>
-                            <option value="." <?php echo esc_attr( get_option('bd_inclusif_sep') ) == '.' ? 'selected="selected"' : ''; ?>>Point bas : .</option>
-                            <option value="•" <?php echo esc_attr( get_option('bd_inclusif_sep') ) == '•' ? 'selected="selected"' : ''; ?>>Point gras : •</option>
+                            <option value="·" <?php echo esc_attr( get_option('bd_inclusif_sep','·') ) == '·' ? 'selected="selected"' : ''; ?>>Point médian : ·</option>
+                            <option value="." <?php echo esc_attr( get_option('bd_inclusif_sep','·') ) == '.' ? 'selected="selected"' : ''; ?>>Point bas : .</option>
+                            <option value="•" <?php echo esc_attr( get_option('bd_inclusif_sep','·') ) == '•' ? 'selected="selected"' : ''; ?>>Point gras : •</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <th>Traitement des commentaires :</th>
                         <td>
-                            <input type="checkbox" name="bd_inclusif_comm" <?php echo esc_attr( get_option('bd_inclusif_comm') ) == 'on' ? 'checked="checked"' : ''; ?> />
+                            <input name="bd_inclusif_comm" type="checkbox" value="1" <?php checked( '1', get_option('bd_inclusif_comm',true) ); ?> />
                         </td>
                     </tr>
                     <tr>
@@ -126,4 +124,11 @@ function bd_inclusif_options_page() {
         </form>
     </div>
 <?php
+}
+
+
+register_uninstall_hook( __FILE__, 'bd_inclusif_uninstall' );
+function bd_inclusif_uninstall() {
+    delete_option( 'bd_inclusif_sep' );
+    delete_option( 'bd_inclusif_comm' );
 }
