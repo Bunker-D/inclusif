@@ -5,8 +5,8 @@
  * Plugin URI:  -  TODO  -
  * Author:      Bunker D
  * Author URI:  http://bunkerd.fr/
- * License:     -  TODO  -
- * License URI: -  TODO  -
+ * License:     MIT
+ * License URI: https://mit-license.org
  * Text Domain: inclusif
  * Description: Reconnaît les termes inclusifs féminins·masculins, remplacent les points utilisés par la forme choisie par l'administrateur,
  *              et rend l'emploi d'une forme inclusive aux logiciels de lecture automatique (aide aux personnes malvoyantes).
@@ -17,6 +17,28 @@
  * @author  Bunker D
  * @version 1.0
  */
+
+/*
+    Copyright (c) 2018 by Bunker D (bunkerd)
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
 
 defined( 'ABSPATH' ) or die();
 
@@ -36,18 +58,13 @@ function bd_incl_replace( $content ) {
 
 
     // Do the relevant substitutions
-/*
-                '~(?!<.*?)(?<=(?!<\pL[^>]*?)[\s>])((?:\pP|&\pL*;|&#\d*;|"|\'|“|‘|«|…)*?)(?!http|www)(\pL+)(?:\.|·|•)(?!com|gov|edu|org|xyz|int|fr|be|ch|de|uk|ca|es|it|quebec)(\pL+)(?=(\pP|&\pL*;|&#\d*;|"|\'|”|’|»|…)*?[\s<])(?![^<>]*?>)~Ss',
-                '~(?!<.*?)(?<=[\s>])((?:\pP|&\pL*;|&#\d*;|"|\'|“|‘|«|…)*?)(?!http|www)(\pL+)(?:\.|·|•)(\pL+)(?:\.|·|•)s(?=(\pP|&\pL*;|&#\d*;|"|\'|”|’|»|…)*?[\s<])(?![^<>]*?>)~Ss'
-*/
-
     $srch = array(
                 '~(?!<.*?)(?<=(?!<\pL[^>]*?)[\s>])((?:\pP|&\pL*;|&#\d*;|"|\'|“|‘|«|…)*?)(?!http|www)([\pLéÉèÈêÊîÎôÔûÛ]+)(?:\.|·|•)(?!com|gov|edu|org|xyz|int|fr|be|ch|de|uk|ca|es|it|quebec)([\pLéÉèÈêÊîÎôÔûÛ]+)(?=(\pP|&\pL*;|&#\d*;|"|\'|”|’|»|…)*?[\s<])(?![^<>]*?>)~Ss',
                 '~(?!<.*?)(?<=[\s>])((?:\pP|&\pL*;|&#\d*;|"|\'|“|‘|«|…)*?)(?!http|www)([\pLéÉèÈêÊîÎôÔûÛ]+)(?:\.|·|•)([\pLéÉèÈêÊîÎôÔûÛ]+)(?:\.|·|•)s(?=(\pP|&\pL*;|&#\d*;|"|\'|”|’|»|…)*?[\s<])(?![^<>]*?>)~Ss'
             );
     $repl = array(
-                "$1$2<span aria-hidden=\"true\" style=\"color:grey\">{$sep}$3</span>",
-                "$1$2<span aria-hidden=\"true\" style=\"color:grey\">{$sep}$3{$sep}</span>s"
+                "$1$2<span aria-hidden=\"true\">{$sep}$3</span>",
+                "$1$2<span aria-hidden=\"true\">{$sep}$3{$sep}</span>s"
             );
     $content = preg_replace($srch,$repl,$content);
 
