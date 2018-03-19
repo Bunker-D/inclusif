@@ -8,7 +8,8 @@
  * License:     -  TODO  -
  * License URI: -  TODO  -
  * Text Domain: inclusif
- * Description: -  TODO  -
+ * Description: Reconnaît les termes inclusifs féminins·masculins, remplacent les points utilisés par la forme choisie par l'administrateur,
+ *              et rend l'emploi d'une forme inclusive aux logiciels de lecture automatique (aide aux personnes malvoyantes).
  *
  * Built on Wordpress 4.9.4.
  *
