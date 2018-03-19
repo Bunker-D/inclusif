@@ -1,6 +1,6 @@
 === Inclusif ===
 Contributors: bunkerd
-Tags: inclusif, point, point médian, texte inclusif, langue inclusif, inclusive language, inclusive text
+Tags: inclusif, point, point médian, texte inclusif, écriture inclusive, inclusive language, inclusive text, inclusive writing, malvoyants, visually impaired, screen-reader
 Requires at least: 4.0
 Tested up to: 4.9.4
 Requires PHP: 4
