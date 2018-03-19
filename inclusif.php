@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Inclusif
  * Version:     1.0
- * Plugin URI:  -  TODO  -
+ * Plugin URI:  -
  * Author:      Bunker D
  * Author URI:  http://bunkerd.fr/
  * License:     MIT
