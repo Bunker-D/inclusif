@@ -1,19 +1,19 @@
 <?php
 /**
- * Plugin Name: Inclusif
+ * Plugin Name: Texte inclusif
  * Version:     1.0
  * Plugin URI:  -
  * Author:      Bunker D
  * Author URI:  http://bunkerd.fr/
  * License:     MIT
  * License URI: https://mit-license.org
- * Text Domain: inclusif
+ * Text Domain: texte-inclusif
  * Description: Reconnaît les termes inclusifs féminins·masculins, remplacent les points utilisés par la forme choisie par l'administrateur,
  *              et rend l'emploi d'une forme inclusive aux logiciels de lecture automatique (aide aux personnes malvoyantes).
  *
  * Compatible with WordPress 4.0 through 4.9.4
  *
- * @package Inclusif
+ * @package Text_Inclusif
  * @author  Bunker D
  * @version 1.0
  */
@@ -43,10 +43,10 @@
 defined( 'ABSPATH' ) or die();
 
 function bd_incl_replace( $content ) {
-    
+
     $sep = get_option('bd_inclusif_sep','·');
     $content = ' ' . $content . ' ';
-    
+
     // Set the encoding to UTF-8.
     if ( function_exists( 'mb_regex_encoding' ) ) {
         $encoding = mb_regex_encoding();
@@ -54,7 +54,7 @@ function bd_incl_replace( $content ) {
     } else {
         $encoding = null;
     }
-    
+
     // Do the relevant substitutions
     $srch = array(
                 '~(?!<.*?)(?<=(?!<\pL[^>]*?)[\s>])((?:\pP|&\pL*;|&#\d*;|"|\'|“|‘|«|…)*?)(?!http|www)([\pLéÉèÈêÊîÎôÔûÛ]+)(?:\.|·|•)(?!com|gov|edu|org|xyz|int|fr|be|ch|de|uk|ca|es|it|quebec)([\pLéÉèÈêÊîÎôÔûÛ]+)(?=(\pP|&\pL*;|&#\d*;|"|\'|”|’|»|…)*?[\s<])(?![^<>]*?>)~Ss',
